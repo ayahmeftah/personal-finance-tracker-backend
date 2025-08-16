@@ -23,7 +23,16 @@ const getCategories = async (req, res) => {
 }
 
 const showCategory = async (req, res) => {
-
+    try {
+        const category = await Category.findById(req.params.id)
+        if (category) {
+            res.status(200).json(category)
+        } else {
+            res.status(404)
+        }
+    } catch (error) {
+        res.status(500).json({error: error.message})
+    }
 }
 
 const deleteCategory = async (req, res) => {
