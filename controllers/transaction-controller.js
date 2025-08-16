@@ -18,10 +18,10 @@ async function getAllTransactions(req, res) {
     try {
         const allTransactions = await Transaction.find()
 
-        if (allTransactions) {
-            res.status(200).json(allTransactions)
-        } else {
+        if (allTransactions.length === 0) {
             res.sendStatus(204)
+        } else {
+            res.status(200).json(allTransactions)
         }
     } catch (error) {
         console.log(error)
