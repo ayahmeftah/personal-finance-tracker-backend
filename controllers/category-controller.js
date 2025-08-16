@@ -37,7 +37,7 @@ const showCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-        
+
     } catch (error) {
         
     }
