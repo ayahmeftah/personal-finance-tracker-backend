@@ -46,8 +46,29 @@ async function getOneTransaction(req, res) {
     }
 }
 
+
+// put for editing transaction
+async function updateTransaction(req, res) {
+    try {
+        const oneTransaction = await Transaction.findByIdAndUpdate(
+            req.params.id,
+            req.body
+        )
+
+        if (oneTransaction) {
+            res.status(200).json(oneTransaction)
+        } else {
+            res.sendStatus(404)
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     createTransaction,
     getAllTransactions,
-    getOneTransaction
+    getOneTransaction,
+    updateTransaction
 }
