@@ -66,9 +66,27 @@ async function updateTransaction(req, res) {
     }
 }
 
+
+// delete one transaction
+async function deleteTransaction(req, res) {
+    try {
+        const oneTransaction = await Transaction.findByIdAndDelete(req.params.id)
+
+        if (oneTransaction) {
+            res.status(200).json(oneTransaction)
+        } else {
+            res.sendStatus(404)
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     createTransaction,
     getAllTransactions,
     getOneTransaction,
-    updateTransaction
+    updateTransaction,
+    deleteTransaction
 }
