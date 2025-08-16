@@ -37,9 +37,14 @@ const showCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-
+        const category = await Category.findByIdAndDelete(req.params.id)
+        if (category) {
+            res.status(200).json(category)
+        } else {
+            res.status(400)
+        }
     } catch (error) {
-        
+        res.status(500).json({error: error.message})
     }
 }
 
