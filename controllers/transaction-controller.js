@@ -3,7 +3,10 @@ const Transaction = require('../models/Transaction')
 // create transaction
 async function createTransaction(req, res) {
     try {
-        const newTransaction = await Transaction.create(req.body)
+        const newTransaction = await Transaction.create({
+            ...req.body,
+            userId: req.user.id
+        })
         res.status(201).json(newTransaction)
 
     } catch (error) {
@@ -16,7 +19,9 @@ async function createTransaction(req, res) {
 // get all transactions
 async function getAllTransactions(req, res) {
     try {
-        const allTransactions = await Transaction.find()
+        const allTransactions = await Transaction.find({
+            userId: req.user.id
+        })
 
         if (allTransactions.length === 0) {
             res.sendStatus(204)
@@ -33,8 +38,10 @@ async function getAllTransactions(req, res) {
 // get one transaction
 async function getOneTransaction(req, res) {
     try {
-        const oneTransaction = await Transaction.findById(req.params.id)
-
+        const oneTransaction = await Transaction.findOne({
+            _id: req.params.id,
+            userId: req.user.id
+        })
         if (oneTransaction) {
             res.status(200).json(oneTransaction)
         } else {
@@ -50,8 +57,11 @@ async function getOneTransaction(req, res) {
 // put for editing transaction
 async function updateTransaction(req, res) {
     try {
-        const oneTransaction = await Transaction.findByIdAndUpdate(
-            req.params.id,
+        const oneTransaction = await Transaction.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                userId: req.user.id
+            },
             req.body
         )
 
@@ -70,7 +80,10 @@ async function updateTransaction(req, res) {
 // delete one transaction
 async function deleteTransaction(req, res) {
     try {
-        const oneTransaction = await Transaction.findByIdAndDelete(req.params.id)
+        const oneTransaction = await Transaction.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user.id
+        })
 
         if (oneTransaction) {
             res.status(200).json(oneTransaction)
