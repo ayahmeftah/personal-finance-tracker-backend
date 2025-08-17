@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const categryController = require('../controllers/category-controller')
-const secureRoute = require("../middlewares/secureRoute")
+const categoryController = require('../controllers/category-controller')
+const secureRoute = require("../middleware/secureRoute")
 
 router.post("/", secureRoute, categoryController.createCategory)
 router.get("/", secureRoute, categoryController.getCategories)

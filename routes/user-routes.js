@@ -1,8 +1,8 @@
 const express = require("express")
 const router = express.Router()
 const userController = require("../controllers/user-controller")
-const secureRoute = require("../middlewares/secureRoute")
-const setupMulter = require("../middlewares/multer")
+const secureRoute = require("../middleware/secureRoute")
+const setupMulter = require("../middleware/multer")
 
 const upload = setupMulter("budgetwise-profile-pics")
 

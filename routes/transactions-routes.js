@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const transactionController = require('../controllers/transaction-controller')
-const secureRoute = require("../middlewares/secureRoute")
+const secureRoute = require("../middleware/secureRoute")
 
 router.post("/", secureRoute, transactionController.createTransaction)
 router.get("/", secureRoute, transactionController.getAllTransactions)
