@@ -1,4 +1,5 @@
 const Category = require('../models/Category')
+const Transaction = require('../models/Transaction')
 
 const createCategory = async (req, res) => {
     try {
@@ -51,8 +52,16 @@ const deleteCategory = async (req, res) => {
             _id: req.params.categoryId,
             userId: req.user.id
         })
+
         if (category) {
-            res.status(200).json(category)
+            const categoryTransactions = await Transaction.find({ categoryId: category._id })
+
+            for (const transaction of categoryTransactions) {
+                await Transaction.findByIdAndDelete(transaction._id)
+            }
+
+            await Category.findByIdAndDelete(category._id)
+            res.status(200).json({ message: "Category and related transactions deleted" })
         } else {
             res.status(404)
         }
