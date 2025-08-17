@@ -54,41 +54,55 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const userId = req.user.id
+        const userCategories = await Category.find({ userId })
 
-        // delete related categories + transactions
-        await Category.deleteMany({ userId })
-        await Transaction.deleteMany({ userId })
+        for (const category of userCategories) {
+            await Transaction.deleteMany({ categoryId: category._id })
+        }
+
+        const userTransactions = await Transaction.find({ userId })
+        for (const transaction of userTransactions) {
+            await Transaction.findByIdAndDelete(transaction._id)
+        }
+
+        for (const category of userCategories) {
+            await Category.findByIdAndDelete(category._id)
+        }
 
         const user = await User.findById(userId)
-        if (!user) return res.status(404).json({ message: "User not found" })
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
 
         if (user.profilePicPublicId) {
             await cloudinary.uploader.destroy(user.profilePicPublicId)
         }
 
         await User.findByIdAndDelete(userId)
-        res.status(200).json({ message: "User and related data deleted" })
+        res.status(200).json({ message: "User deleted" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 }
 
 const removeProfilePic = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id)
-    if (!user) return res.status(404).json({ message: "User not found" })
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
 
-    if (user.profilePicPublicId) {
-      await cloudinary.uploader.destroy(user.profilePicPublicId)
-      user.profilePic = null
-      user.profilePicPublicId = null
-      await user.save()
+        if (user.profilePicPublicId) {
+            await cloudinary.uploader.destroy(user.profilePicPublicId)
+            user.profilePic = null
+            user.profilePicPublicId = null
+            await user.save()
+        }
+
+        res.status(200).json({ message: "Profile picture removed" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
     }
-
-    res.status(200).json({ message: "Profile picture removed" })
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
 }
 
 module.exports = {
