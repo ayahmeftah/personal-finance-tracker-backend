@@ -59,20 +59,11 @@ exports.login = async (req, res) => {
         }
 
         const payload = {
-            id: user._id,
-            username: user.username
+            id: user._id
             // Add anything else that you want to put into the JWT token here
         }
         const token = jwt.sign(payload, SECRET, { expiresIn: '20d' }) //Look at the docs for more 'expires in' options
-        res.json({
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                username: user.username,
-                profilePic: user.profilePic
-            }
-        })
+        res.json({token})
     } catch (err) {
         res.status(500).json({ message: 'Server error' })
     }
