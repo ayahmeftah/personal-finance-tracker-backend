@@ -12,7 +12,7 @@ const createCategory = async (req, res) => {
 const getCategories = async (req, res) => {
     try {
         const allCategories = await Category.find()
-        if (allCategories) {
+        if (allCategories.length) {
             res.status(200).json(allCategories)
         } else {
             res.status(204)
