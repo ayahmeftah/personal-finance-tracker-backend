@@ -73,8 +73,27 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const removeProfilePic = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+    if (!user) return res.status(404).json({ message: "User not found" })
+
+    if (user.profilePicPublicId) {
+      await cloudinary.uploader.destroy(user.profilePicPublicId)
+      user.profilePic = null
+      user.profilePicPublicId = null
+      await user.save()
+    }
+
+    res.status(200).json({ message: "Profile picture removed" })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
 module.exports = {
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    removeProfilePic
 }
