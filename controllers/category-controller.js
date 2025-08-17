@@ -12,7 +12,7 @@ const createCategory = async (req, res) => {
 const getCategories = async (req, res) => {
     try {
         const allCategories = await Category.find()
-        if (allCategories.length) {
+        if (allCategories) {
             res.status(200).json(allCategories)
         } else {
             res.status(204)
@@ -24,7 +24,7 @@ const getCategories = async (req, res) => {
 
 const showCategory = async (req, res) => {
     try {
-        const category = await Category.findById(req.params.id)
+        const category = await Category.findById(req.params.categoryId)
         if (category) {
             res.status(200).json(category)
         } else {
@@ -37,7 +37,7 @@ const showCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndDelete(req.params.id)
+        const category = await Category.findByIdAndDelete(req.params.categoryId)
         if (category) {
             res.status(200).json(category)
         } else {
@@ -50,7 +50,7 @@ const deleteCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        const category = await Category.findByIdAndUpdate(req.params.categoryId, req.body, {new: true})
         if (category) {
             res.status(200).json(category)
         } else {
