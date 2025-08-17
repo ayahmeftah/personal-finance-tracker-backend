@@ -2,7 +2,10 @@ const Category = require('../models/Category')
 
 const createCategory = async (req, res) => {
     try {
-        const createdCategory = await Category.create(req.body)
+        const createdCategory = await Category.create({
+            ...req.body,
+            userId: req.user.id
+        })
         res.status(201).json(createCategory)
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -11,7 +14,9 @@ const createCategory = async (req, res) => {
 
 const getCategories = async (req, res) => {
     try {
-        const allCategories = await Category.find()
+        const allCategories = await Category.find({
+            userId: req.user.id
+        })
         if (allCategories.length === 0) {
             res.status(204)
         } else {
@@ -26,7 +31,10 @@ const getCategories = async (req, res) => {
 
 const showCategory = async (req, res) => {
     try {
-        const category = await Category.findById(req.params.categoryId)
+        const category = await Category.findOne({
+            _id: req.params.categoryId,
+            userId: req.user.id
+        })
         if (category) {
             res.status(200).json(category)
         } else {
@@ -39,7 +47,10 @@ const showCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndDelete(req.params.categoryId)
+        const category = await Category.findOneAndDelete({
+            _id: req.params.categoryId,
+            userId: req.user.id
+        })
         if (category) {
             res.status(200).json(category)
         } else {
@@ -52,7 +63,13 @@ const deleteCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndUpdate(req.params.categoryId, req.body, { new: true })
+        const category = await Category.findOneAndUpdate(
+            {
+                _id: req.params.categoryId,
+                userId: req.user.id
+            },
+            req.body
+        )
         if (category) {
             res.status(200).json(category)
         } else {
