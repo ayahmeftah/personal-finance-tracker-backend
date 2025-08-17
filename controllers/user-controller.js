@@ -1,0 +1,113 @@
+const bcrypt = require("bcrypt")
+const User = require("../models/User")
+const Category = require("../models/Category")
+const Transaction = require("../models/Transaction")
+const cloudinary = require("../config/cloudinary")
+
+
+const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-passwordHash")
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ message: "User not found" })
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        if (req.body.username && req.body.username !== user.username) {
+            const existing = await User.findOne({ username: req.body.username })
+            if (existing) {
+                return res.status(400).json({ message: "Username already taken" })
+            }
+            user.username = req.body.username
+        }
+
+        if (req.body.name) user.name = req.body.name
+        if (req.body.password) {
+            user.passwordHash = await bcrypt.hash(req.body.password, 10)
+        }
+
+        if (req.file) {
+            if (user.profilePicPublicId) {
+                await cloudinary.uploader.destroy(user.profilePicPublicId)
+            }
+            user.profilePic = req.file.path
+            user.profilePicPublicId = req.file.filename
+        }
+
+        await user.save()
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const userCategories = await Category.find({ userId })
+
+        for (const category of userCategories) {
+            await Transaction.deleteMany({ categoryId: category._id })
+        }
+
+        const userTransactions = await Transaction.find({ userId })
+        for (const transaction of userTransactions) {
+            await Transaction.findByIdAndDelete(transaction._id)
+        }
+
+        for (const category of userCategories) {
+            await Category.findByIdAndDelete(category._id)
+        }
+
+        const user = await User.findById(userId)
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+
+        if (user.profilePicPublicId) {
+            await cloudinary.uploader.destroy(user.profilePicPublicId)
+        }
+
+        await User.findByIdAndDelete(userId)
+        res.status(200).json({ message: "User deleted" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+const removeProfilePic = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        if (user.profilePicPublicId) {
+            await cloudinary.uploader.destroy(user.profilePicPublicId)
+            user.profilePic = null
+            user.profilePicPublicId = null
+            await user.save()
+        }
+
+        res.status(200).json({ message: "Profile picture removed" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+module.exports = {
+    getUser,
+    updateUser,
+    deleteUser,
+    removeProfilePic
+}

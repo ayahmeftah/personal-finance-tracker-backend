@@ -1,11 +1,12 @@
 const router = require('express').Router()
-const categryController = require('../controllers/category-controller')
+const categoryController = require('../controllers/category-controller')
+const secureRoute = require("../middleware/secureRoute")
 
-router.post('/', categryController.createCategory)
-router.get('/', categryController.getCategories)
-router.get('/:categoryId', categryController.showCategory)
-router.put('/:categoryId',categryController.updateCategory)
-router.delete('/:categoryId',categryController.deleteCategory)
+router.post("/", secureRoute, categoryController.createCategory)
+router.get("/", secureRoute, categoryController.getCategories)
+router.get("/:categoryId", secureRoute, categoryController.showCategory)
+router.put("/:categoryId", secureRoute, categoryController.updateCategory)
+router.delete("/:categoryId", secureRoute, categoryController.deleteCategory)
 
 
 module.exports = router

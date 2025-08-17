@@ -8,6 +8,8 @@ const cors = require("cors")
 
 const transactionRoutes = require('./routes/transactions-routes')
 const categoryRoutes = require('./routes/category-routes')
+const authRoutes = require('./routes/auth-routes')
+const userRoutes = require('./routes/user-routes')
 
 
 connectToDB()
@@ -16,7 +18,9 @@ app.use(cors({origin: 'http://localhost:5173'}))
 app.use(morgan("dev"))
 app.use(express.json())
 
-app.use('/transactions/category', categoryRoutes)
+app.use('/auth', authRoutes)
+app.use('/users', userRoutes)
+app.use('/category', categoryRoutes)
 app.use('/transactions', transactionRoutes)
 
 
