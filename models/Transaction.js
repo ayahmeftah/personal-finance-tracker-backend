@@ -11,6 +11,10 @@ const transactionSchema = new mongoose.Schema({
     //     ref: 'Category',
     //     required: true
     // },
+    name : {
+        type: String,
+        required: true
+    },
     transactionType: {
         type: String,
         enum: [
@@ -21,6 +25,7 @@ const transactionSchema = new mongoose.Schema({
     },
     amount: {
         type: Number,
+        min: 1,
         required: true
     },
     date: {
