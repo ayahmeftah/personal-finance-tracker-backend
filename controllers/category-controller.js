@@ -5,20 +5,22 @@ const createCategory = async (req, res) => {
         const createdCategory = await Category.create(req.body)
         res.status(201).json(createCategory)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message })
     }
 }
 
 const getCategories = async (req, res) => {
     try {
         const allCategories = await Category.find()
-        if (allCategories) {
-            res.status(200).json(allCategories)
-        } else {
+        if (allCategories.length === 0) {
             res.status(204)
+        } else {
+
+            res.status(200).json(allCategories)
+
         }
     } catch (error) {
-        res.status(500).json({error: error.message})   
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -31,7 +33,7 @@ const showCategory = async (req, res) => {
             res.status(404)
         }
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -44,20 +46,20 @@ const deleteCategory = async (req, res) => {
             res.status(404)
         }
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message })
     }
 }
 
 const updateCategory = async (req, res) => {
     try {
-        const category = await Category.findByIdAndUpdate(req.params.categoryId, req.body, {new: true})
+        const category = await Category.findByIdAndUpdate(req.params.categoryId, req.body, { new: true })
         if (category) {
             res.status(200).json(category)
         } else {
             res.status(404)
         }
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message })
     }
 }
 
