@@ -25,8 +25,6 @@ exports.signup = async (req, res) => {
             profilePicPublicId = req.file.filename
         }
 
-
-
         // create user
         const newUser = new User({
             name,
@@ -37,7 +35,10 @@ exports.signup = async (req, res) => {
         })
         await newUser.save()
 
-        res.status(201).json({ message: 'User registered successfully' })
+        const payload = { id: newUser._id }
+        const token = jwt.sign(payload, SECRET, { expiresIn: '20d' })
+
+        res.status(201).json({ token })
     } catch (err) {
         res.status(500).json({ message: 'Server error' })
     }
