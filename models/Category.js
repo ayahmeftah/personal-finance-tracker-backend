@@ -14,6 +14,9 @@ const categorySchema = new mongoose.Schema({
         type: String,
         enum: ['income', 'expense'],
         required: true
+    },
+    emoji: {
+        type: String
     }
 })
 
