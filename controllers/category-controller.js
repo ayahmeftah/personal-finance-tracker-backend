@@ -7,7 +7,7 @@ const createCategory = async (req, res) => {
             ...req.body,
             userId: req.user.id
         })
-        res.status(201).json(createCategory)
+        res.status(201).json(createdCategory)
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -19,7 +19,7 @@ const getCategories = async (req, res) => {
             userId: req.user.id
         })
         if (allCategories.length === 0) {
-            res.status(204)
+            res.status(200).json([])
         } else {
 
             res.status(200).json(allCategories)
