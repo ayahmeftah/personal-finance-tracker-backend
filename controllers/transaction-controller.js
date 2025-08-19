@@ -24,7 +24,7 @@ async function getAllTransactions(req, res) {
         })
 
         if (allTransactions.length === 0) {
-            res.sendStatus(204)
+            res.status(200).json([])
         } else {
             res.status(200).json(allTransactions)
         }
