@@ -21,7 +21,7 @@ async function getAllTransactions(req, res) {
     try {
         const allTransactions = await Transaction.find({
             userId: req.user.id
-        })
+        }).populate("categoryId", "name emoji")
 
         if (allTransactions.length === 0) {
             res.status(200).json([])
