@@ -7,6 +7,12 @@ The backend is built with **Node.js, Express, MongoDB**, and **JavaScript**.
 
 ---
 
+## Frontend Repository
+The frontend repository can be found here:  
+[Personal Finance Tracker - Frontend](https://github.com/ayahmeftah/personal-finance-tracker-frontend)  
+
+---
+
 ## Getting Started
 
 > [!NOTE]
@@ -46,12 +52,6 @@ The backend is built with **Node.js, Express, MongoDB**, and **JavaScript**.
    ```bash  
    npm run dev  
    ```
----
-
-## Frontend Repository
-The frontend repository can be found here:  
-[Personal Finance Tracker - Frontend](https://github.com/ayahmeftah/personal-finance-tracker-frontend)  
-
 ---
 
 ## Routes
