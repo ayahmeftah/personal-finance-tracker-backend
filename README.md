@@ -13,6 +13,41 @@ The frontend repository can be found here:
 
 ---
 
+## Routes
+
+### Auth Routes
+| HTTP Method | Controller | Response | URI | Use Case |
+|-------------|------------|---------|-----|----------|
+| POST | signup | 201 | /auth/signup | Create a new user account |
+| POST | login | 200 | /auth/login | Login with username and password |
+
+### User Routes
+| HTTP Method | Controller | Response | URI | Use Case |
+|-------------|------------|---------|-----|----------|
+| GET | getUser | 200 | /users/profile | Get current user profile |
+| PUT | updateUser | 200 | /users/profile | Update user profile |
+| DELETE | deleteUser | 200 | /users/profile | Delete user account |
+| DELETE | removeProfilePic | 200 | /users/profile/profile-pic | Remove user's profile picture |
+
+### Transaction Routes
+| HTTP Method | Controller | Response | URI | Use Case |
+|-------------|------------|---------|-----|----------|
+| POST | createTransaction | 201 | /transactions | Create a new transaction |
+| GET | getAllTransactions | 200 | /transactions | List all user transactions |
+| GET | getOneTransaction | 200 | /transactions/:id | Get a single transaction |
+| PUT | updateTransaction | 200 | /transactions/:id | Update a transaction |
+| DELETE | deleteTransaction | 200 | /transactions/:id | Delete a transaction |
+
+### Category Routes
+| HTTP Method | Controller | Response | URI | Use Case |
+|-------------|------------|---------|-----|----------|
+| POST | createCategory | 201 | /category | Create a new category |
+| GET | getCategories | 200 | /category | List all user categories |
+| GET | showCategory | 200 | /category/:categoryId | Get a single category |
+| PUT | updateCategory | 200 | /category/:categoryId | Update a category |
+| DELETE | deleteCategory | 200 | /category/:categoryId | Delete a category and related transactions |
+
+---
 ## Getting Started
 
 > [!NOTE]
@@ -52,38 +87,3 @@ The frontend repository can be found here:
    ```bash  
    npm run dev  
    ```
----
-
-## Routes
-
-### Auth Routes
-| HTTP Method | Controller | Response | URI | Use Case |
-|-------------|------------|---------|-----|----------|
-| POST | signup | 201 | /auth/signup | Create a new user account |
-| POST | login | 200 | /auth/login | Login with username and password |
-
-### User Routes
-| HTTP Method | Controller | Response | URI | Use Case |
-|-------------|------------|---------|-----|----------|
-| GET | getUser | 200 | /users/profile | Get current user profile |
-| PUT | updateUser | 200 | /users/profile | Update user profile |
-| DELETE | deleteUser | 200 | /users/profile | Delete user account |
-| DELETE | removeProfilePic | 200 | /users/profile/profile-pic | Remove user's profile picture |
-
-### Transaction Routes
-| HTTP Method | Controller | Response | URI | Use Case |
-|-------------|------------|---------|-----|----------|
-| POST | createTransaction | 201 | /transactions | Create a new transaction |
-| GET | getAllTransactions | 200 | /transactions | List all user transactions |
-| GET | getOneTransaction | 200 | /transactions/:id | Get a single transaction |
-| PUT | updateTransaction | 200 | /transactions/:id | Update a transaction |
-| DELETE | deleteTransaction | 200 | /transactions/:id | Delete a transaction |
-
-### Category Routes
-| HTTP Method | Controller | Response | URI | Use Case |
-|-------------|------------|---------|-----|----------|
-| POST | createCategory | 201 | /category | Create a new category |
-| GET | getCategories | 200 | /category | List all user categories |
-| GET | showCategory | 200 | /category/:categoryId | Get a single category |
-| PUT | updateCategory | 200 | /category/:categoryId | Update a category |
-| DELETE | deleteCategory | 200 | /category/:categoryId | Delete a category and related transactions |
