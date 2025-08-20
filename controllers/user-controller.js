@@ -44,6 +44,14 @@ const updateUser = async (req, res) => {
             user.profilePicPublicId = req.file.filename
         }
 
+        if (req.body.currentPassword && req.body.newPassword) {
+            const valid = await user.validatePassword(req.body.currentPassword);
+            if (!valid) {
+                return res.status(400).json({ message: "Current password is incorrect" })
+            }
+            user.passwordHash = await bcrypt.hash(req.body.newPassword, 10)
+        }
+
         await user.save()
         res.status(200).json(user)
     } catch (error) {
